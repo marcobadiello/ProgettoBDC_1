@@ -153,6 +153,7 @@ def main():
     # Configurazione Spark (Context)
     conf = SparkConf().setAppName(f"GxxHW1")
     sc = SparkContext(conf=conf)
+    sc.setLogLevel("ERROR") # Aggiungi questa riga!
 
     # 1. Stampa parametri iniziali
     print(f"INPUT PARAMETERS: file={file_path} ka={ka} kb={kb} L={L}")
@@ -171,7 +172,7 @@ def main():
     start_t = time.time()
     solution = MRFairFFT(inputPoints, ka, kb)
     end_t = time.time()
-    elapsed_ms = (end_t - start_t)
+    elapsed_ms = (end_t - start_t) * 1000
 
     # 5. Calcolo Objective Function: max_{x in U} dist(x, S)
     # Lo facciamo con Spark per scalare su dataset enormi
@@ -190,3 +191,4 @@ def main():
     print(f"Max distance = {objective_value}")
     print(f"Time of MRFairFFT = {int(elapsed_ms)} ms")
 
+main()
